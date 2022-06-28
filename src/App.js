@@ -6,6 +6,7 @@ import './styles/main.css';
 /* コンポーネント */
 import Todo from './components/Todo';
 import Login from "./components/Login";
+import Upload from "./components/Upload";
 
 import { auth, storeUserInfo, updateUser } from "./lib/firebase";
 
@@ -37,6 +38,7 @@ const [loading, setLoading] = useState(true);
       return (
         <div class="navbar-end">
           <div class="navbar-item">
+             <Upload userImage={user.image} onSelectedImage={handleImageChanged} />
             {user.name}
           </div>
           <div class="navbar-item">

@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -32,7 +33,7 @@ export const getFirebaseItems = async () => {
     );
     return items;
   } catch (err) {
-    console.log(err);
+      console.log(err);
     return [];
   }
 }
@@ -98,9 +99,23 @@ export const updateUser = async (user, image) => {
     if (userDoc.exists) {
       await firebase.firestore().collection("users").doc(user.id).update({ ...userDoc.data(), image: image });
     }
+    console.log(userDoc)
   } catch (err) {
     console.log(err);
   }
 }
+
+export const uploadImage = async (image) => {
+  // const userRef = firebase.storage.ref(`/images/${image.name}`);
+  const ref = firebase.storage().ref().child(`/images/${image.name}`);
+  let downloadUrl = "";
+  try {
+    await ref.put(image);
+    downloadUrl = await ref.getDownloadURL();
+  } catch (err) {
+    console.log(err);
+  }
+  return downloadUrl;
+};
 
 
